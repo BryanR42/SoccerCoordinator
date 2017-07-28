@@ -20,32 +20,15 @@ let player16: [String: Any] = ["name": "Phillip Helm", "height": 44, "experience
 let player17: [String: Any] = ["name": "Les Clay", "height": 42, "experienced": true, "guardian": "Wynonna Brown"]
 let player18: [String: Any] = ["name": "Herschel Krustofski", "height": 45, "experienced": true, "guardian": "Hyman and Rachel Krustofski"]
 
-let players = [player1, player2, player3, player4, player5, player6, player7, player8, player9, player10, player11, player12, player13, player14, player15, player16, player17, player18]
+var players = [player1, player2, player3, player4, player5, player6, player7, player8, player9, player10, player11, player12, player13, player14, player15, player16, player17, player18]
 
-// sort into experienced and non-experienced.
 
-var experiencedList: [[String: Any]] = []
-var newPlayerList: [[String: Any]] = []
-var totalHeight = 0
 
-for player in players {
-	
-// collect heights as well to determine the overall average
-	let thisHeight = player["height"] as! Int
-	totalHeight += thisHeight
-	if player["experienced"] as! Bool {
-		experiencedList.append(player)
-	} else {
-		newPlayerList.append(player)
-	}
-}
-
-// calculate the overall Average height
-let overallAverageHeight = Double(totalHeight) / Double(players.count)
+//	find the tallest and return that index
 
 func findTallest(inPlayerList list: [[String: Any]]) -> Int {
 	var tallestIndex = 0
-// loop through each player comparing height to find the tallest
+//	loop through each player comparing height to find the tallest
 	for i in 1..<list.count {
 		
 		if list[i]["height"] as! Int > list[tallestIndex]["height"] as! Int {
@@ -55,6 +38,61 @@ func findTallest(inPlayerList list: [[String: Any]]) -> Int {
 	return tallestIndex
 }
 
+//	function to sort a group by height
 
-let taller: Int = findTallest(inPlayerList: players)
-print(players[taller]["name"]!)
+func sortList(byHeight list: [[String: Any]]) -> [[String: Any]] {
+	var tempList = list
+	var sortedList: [[String: Any]] = []
+	for _ in 1...list.count {
+		let tallestInListIndex: Int = findTallest(inPlayerList: tempList)
+		//use the index returned to add the the sorted list and remove from the temp list so the next iteration will find the next tallest
+		sortedList.append(tempList[tallestInListIndex])
+		tempList.remove(at: tallestInListIndex)
+		}
+	return sortedList
+}
+
+//	sort the player list by height
+players = sortList(byHeight: players)
+
+/* 
+	split the players int experienced and new player lists which will remain
+	sorted by height
+*/
+
+var experiencedList: [[String: Any]] = []
+var newPlayerList: [[String: Any]] = []
+
+for player in players {
+	
+	if player["experienced"] as! Bool {
+		experiencedList.append(player)
+	} else {
+		newPlayerList.append(player)
+	}
+}
+
+/*	
+	Assign teams using "tallest:shortest" combinations.
+	The results should end up with three roughly equal groups.
+*/
+
+// Team height sum variables for calculating the averages
+var teamSharksHeight: Int = 0
+var teamDragonsHeight: Int = 0
+var teamRaptorsHeight: Int = 0
+for i in 0..<(players.count / 2) {
+	let exI = experiencedList[i]["height"] as! Int
+	let newI = newPlayerList[8-i]["height"] as! Int
+	print(" \(exI)     \(newI)   \(exI + newI)")
+	switch (i + 1) % 3 {
+	case 0: teamSharksHeight += exI + newI
+	case 1: teamDragonsHeight += exI + newI
+	default: teamRaptorsHeight += exI + newI
+	}
+}
+let teamSharksAverage = Double(teamSharksHeight) / 6.0
+let teamDragonsAverage = Double(teamDragonsHeight) / 6.0
+let teamRaptorsAverage = Double(teamRaptorsHeight) / 6.0
+
+
