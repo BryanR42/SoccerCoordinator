@@ -14,7 +14,7 @@ let player10: [String: Any] = ["name": "Sal Dali", "height": 41, "experienced": 
 let player11: [String: Any] = ["name": "Joe Kavalier", "height": 39, "experienced": false, "guardian": "Sam and Elaine Kavalier"]
 let player12: [String: Any] = ["name": "Ben Finkelstein", "height": 44, "experienced": false, "guardian": "Aaron and Jill Finkelstein"]
 let player13: [String: Any] = ["name": "Diego Soto", "height": 41, "experienced": true, "guardian": "Robin and Sarika Soto"]
-let player14: [String: Any] = ["name": "Chloe Alaska", "height": 41, "experienced": false, "guardian": "David and Jamie Alaksa"]
+let player14: [String: Any] = ["name": "Chloe Alaska", "height": 47, "experienced": false, "guardian": "David and Jamie Alaksa"]
 let player15: [String: Any] = ["name": "Arnold Willis", "height": 43, "experienced": false, "guardian": "Claire Willis"]
 let player16: [String: Any] = ["name": "Phillip Helm", "height": 44, "experienced": true, "guardian": "Thomas Helm and Eva Jones"]
 let player17: [String: Any] = ["name": "Les Clay", "height": 42, "experienced": true, "guardian": "Wynonna Brown"]
@@ -22,5 +22,39 @@ let player18: [String: Any] = ["name": "Herschel Krustofski", "height": 45, "exp
 
 let players = [player1, player2, player3, player4, player5, player6, player7, player8, player9, player10, player11, player12, player13, player14, player15, player16, player17, player18]
 
+// sort into experienced and non-experienced.
+
+var experiencedList: [[String: Any]] = []
+var newPlayerList: [[String: Any]] = []
+var totalHeight = 0
+
+for player in players {
+	
+// collect heights as well to determine the overall average
+	let thisHeight = player["height"] as! Int
+	totalHeight += thisHeight
+	if player["experienced"] as! Bool {
+		experiencedList.append(player)
+	} else {
+		newPlayerList.append(player)
+	}
+}
+
+// calculate the overall Average height
+let overallAverageHeight = Double(totalHeight) / Double(players.count)
+
+func findTallest(inPlayerList list: [[String: Any]]) -> Int {
+	var tallestIndex = 0
+// loop through each player comparing height to find the tallest
+	for i in 1..<list.count {
+		
+		if list[i]["height"] as! Int > list[tallestIndex]["height"] as! Int {
+			tallestIndex = i
+		}
+	}
+	return tallestIndex
+}
 
 
+let taller: Int = findTallest(inPlayerList: players)
+print(players[taller]["name"]!)
