@@ -82,13 +82,14 @@ var teamSharksHeight: Int = 0
 var teamDragonsHeight: Int = 0
 var teamRaptorsHeight: Int = 0
 for i in 0..<(players.count / 2) {
-	let exI = experiencedList[i]["height"] as! Int
-	let newI = newPlayerList[8-i]["height"] as! Int
-	print(" \(exI)     \(newI)   \(exI + newI)")
+	let experiencedPlayerHeight = experiencedList[i]["height"] as! Int
+	let newPlayerHeight = newPlayerList[8-i]["height"] as! Int
 	switch (i + 1) % 3 {
-	case 0: teamSharksHeight += exI + newI
-	case 1: teamDragonsHeight += exI + newI
-	default: teamRaptorsHeight += exI + newI
+	case 0: teamSharksHeight += experiencedPlayerHeight + newPlayerHeight
+	// add players to teams here
+		
+	case 1: teamDragonsHeight += experiencedPlayerHeight + newPlayerHeight
+	default: teamRaptorsHeight += experiencedPlayerHeight + newPlayerHeight
 	}
 }
 let teamSharksAverage = Double(teamSharksHeight) / 6.0
