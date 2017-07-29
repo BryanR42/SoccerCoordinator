@@ -1,5 +1,13 @@
+/*
+	Treehouse Techdegree: iOS - Project 1
+	Team building exercise!
+*/
 
-// Declaring player data
+/*
+	---------------------
+	Declaring player data
+	---------------------
+*/
 
 let player1: [String: Any] = ["name": "Joe Smith", "height": 42, "experienced": true, "guardian": "Jim and Jan Smith"]
 let player2: [String: Any] = ["name": "Jill Tanner", "height": 36, "experienced": true, "guardian": "Clara Tanner"]
@@ -20,7 +28,7 @@ let player16: [String: Any] = ["name": "Phillip Helm", "height": 44, "experience
 let player17: [String: Any] = ["name": "Les Clay", "height": 42, "experienced": true, "guardian": "Wynonna Brown"]
 let player18: [String: Any] = ["name": "Herschel Krustofski", "height": 45, "experienced": true, "guardian": "Hyman and Rachel Krustofski"]
 
-//	Grouping all players  together
+//	Grouping all players together
 
 var players = [player1, player2, player3, player4, player5, player6, player7, player8, player9, player10, player11, player12, player13, player14, player15, player16, player17, player18]
 
@@ -29,6 +37,11 @@ var teamSharks: [[String: Any]] = []
 var teamDragons: [[String: Any]] = []
 var teamRaptors: [[String: Any]] = []
 
+/*
+	-----------------------------
+	Sorting and Assigning Players
+	-----------------------------
+*/
 
 //	Function to find the tallest player and return that index
 
@@ -44,7 +57,7 @@ func findTallest(inPlayerList list: [[String: Any]]) -> Int {
 	return tallestIndex
 }
 
-//	Function to sort a group by height
+//	Function to sort a group by height - initially I planned to sort each group after splitting new players from experienced, so I wrote it as a function, but it was more efficient to just sort the complete player list, as splitting them up doesn't reorder them.
 
 func sortList(byHeight list: [[String: Any]]) -> [[String: Any]] {
 	var tempList = list
@@ -91,18 +104,20 @@ var teamRaptorsHeight: Int = 0
 
 /*
 	Loop through both lists simultaneously pairing tallest-experienced with shortest-new players. 
-	Assign those players to teams while adding up their heights to calculate the average later
+	Assign those players to teams while adding up their heights to calculate the average later.
 */
 
+//	loopCount to determine how many times to run the loop - half the players since we are assigning 2 players per iteration
 let loopCount = players.count / 2
 for i in 0..<loopCount {
 	let experiencedPlayerHeight = experiencedList[i]["height"] as! Int
 	let newPlayerHeight = newPlayerList[loopCount-i-1]["height"] as! Int
+	//	Choose which team based on the loop iteration number
 	switch (i + 1) % 3 {
-	case 0: teamSharks.append(experiencedList[i])
+	case 1: teamSharks.append(experiencedList[i])
 			teamSharks.append(newPlayerList[loopCount-i-1])
 			teamSharksHeight += experiencedPlayerHeight + newPlayerHeight
-	case 1: teamDragons.append(experiencedList[i])
+	case 2: teamDragons.append(experiencedList[i])
 			teamDragons.append(newPlayerList[loopCount-i-1])
 			teamDragonsHeight += experiencedPlayerHeight + newPlayerHeight
 	default: teamRaptors.append(experiencedList[i])
@@ -110,12 +125,22 @@ for i in 0..<loopCount {
 			 teamRaptorsHeight += experiencedPlayerHeight + newPlayerHeight
 	}
 }
-let teamSharksAverageHeight = Double(teamSharksHeight) / Double(teamSharks.count)
-let teamDragonsAverageHeight = Double(teamDragonsHeight) / Double(teamDragons.count)
-let teamRaptorsAverageHeight = Double(teamRaptorsHeight) / Double(teamRaptors.count)
 
-func printTeam(list: [[String: Any]]) {
+//	Calculate the teams average heights
+
+func averageHeightWith(totalHeight: Int, playerCount: Int) -> Double {
+	let average: Double = Double(totalHeight) / Double(playerCount)
+	return average
+}
+let teamSharksAverageHeight = averageHeightWith(totalHeight: teamSharksHeight, playerCount: teamSharks.count)
+let teamDragonsAverageHeight = averageHeightWith(totalHeight: teamDragonsHeight, playerCount: teamDragons.count)
+let teamRaptorsAverageHeight = averageHeightWith(totalHeight: teamRaptorsHeight, playerCount: teamRaptors.count)
+
+//	Print the team rosters to the console with names, heights, and experience level, and team average heights
+
+func printRoster(list: [[String: Any]]) {
 	var experienced: String
+	print("---------------------------------------")
 	for teamMember in list {
 		if teamMember["experienced"] as! Bool == true {
 			experienced = "has played before"
@@ -124,18 +149,25 @@ func printTeam(list: [[String: Any]]) {
 		}
 		print("\(teamMember["name"]!) is \(teamMember["height"]!) inches tall, and " + experienced)
 	}
+	print()
 }
 
 print("Team Sharks       Average Height: \((teamSharksAverageHeight * 100).rounded() / 100)")
-print("---------------------------------------")
-printTeam(list: teamSharks)
-print()
+printRoster(list: teamSharks)
 print("Team Dragons      Average Height: \((teamDragonsAverageHeight * 100).rounded() / 100)")
-print("---------------------------------------")
-printTeam(list: teamDragons)
-print()
+printRoster(list: teamDragons)
 print("Team Raptors      Average Height: \((teamRaptorsAverageHeight * 100).rounded() / 100)")
-print("---------------------------------------")
-printTeam(list: teamRaptors)
-print()
+printRoster(list: teamRaptors)
+
+/*
+	-------------------
+	Prepare the letters
+	-------------------
+*/
+
+func createLetter(forPlayer: [String: Any]) -> String {
+	let letter: String = ""
+	
+	return letter
+}
 
