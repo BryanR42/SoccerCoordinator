@@ -20,11 +20,17 @@ let player16: [String: Any] = ["name": "Phillip Helm", "height": 44, "experience
 let player17: [String: Any] = ["name": "Les Clay", "height": 42, "experienced": true, "guardian": "Wynonna Brown"]
 let player18: [String: Any] = ["name": "Herschel Krustofski", "height": 45, "experienced": true, "guardian": "Hyman and Rachel Krustofski"]
 
+//	Grouping all players  together
+
 var players = [player1, player2, player3, player4, player5, player6, player7, player8, player9, player10, player11, player12, player13, player14, player15, player16, player17, player18]
 
+//	Creating empty teams
+var teamSharks: [[String: Any]] = []
+var teamDragons: [[String: Any]] = []
+var teamRaptors: [[String: Any]] = []
 
 
-//	find the tallest and return that index
+//	Function to find the tallest player and return that index
 
 func findTallest(inPlayerList list: [[String: Any]]) -> Int {
 	var tallestIndex = 0
@@ -38,26 +44,27 @@ func findTallest(inPlayerList list: [[String: Any]]) -> Int {
 	return tallestIndex
 }
 
-//	function to sort a group by height
+//	Function to sort a group by height
 
 func sortList(byHeight list: [[String: Any]]) -> [[String: Any]] {
 	var tempList = list
 	var sortedList: [[String: Any]] = []
 	for _ in 1...list.count {
 		let tallestInListIndex: Int = findTallest(inPlayerList: tempList)
-		//use the index returned to add the the sorted list and remove from the temp list so the next iteration will find the next tallest
+		//	Add player to the sorted list and remove from the temp list so the next iteration will find the next tallest player
 		sortedList.append(tempList[tallestInListIndex])
 		tempList.remove(at: tallestInListIndex)
 		}
 	return sortedList
 }
 
-//	sort the player list by height
+//	Sort the player list by height
+
 players = sortList(byHeight: players)
 
 /* 
-	split the players int experienced and new player lists which will remain
-	sorted by height
+	Split the players into experienced and new player lists.
+	These will remain sorted by height.
 */
 
 var experiencedList: [[String: Any]] = []
@@ -77,23 +84,58 @@ for player in players {
 	The results should end up with three roughly equal groups.
 */
 
-// Team height sum variables for calculating the averages
+//	Team height sum variables for calculating the averages
 var teamSharksHeight: Int = 0
 var teamDragonsHeight: Int = 0
 var teamRaptorsHeight: Int = 0
-for i in 0..<(players.count / 2) {
+
+/*
+	Loop through both lists simultaneously pairing tallest-experienced with shortest-new players. 
+	Assign those players to teams while adding up their heights to calculate the average later
+*/
+
+let loopCount = players.count / 2
+for i in 0..<loopCount {
 	let experiencedPlayerHeight = experiencedList[i]["height"] as! Int
-	let newPlayerHeight = newPlayerList[8-i]["height"] as! Int
+	let newPlayerHeight = newPlayerList[loopCount-i-1]["height"] as! Int
 	switch (i + 1) % 3 {
-	case 0: teamSharksHeight += experiencedPlayerHeight + newPlayerHeight
-	// add players to teams here
-		
-	case 1: teamDragonsHeight += experiencedPlayerHeight + newPlayerHeight
-	default: teamRaptorsHeight += experiencedPlayerHeight + newPlayerHeight
+	case 0: teamSharks.append(experiencedList[i])
+			teamSharks.append(newPlayerList[loopCount-i-1])
+			teamSharksHeight += experiencedPlayerHeight + newPlayerHeight
+	case 1: teamDragons.append(experiencedList[i])
+			teamDragons.append(newPlayerList[loopCount-i-1])
+			teamDragonsHeight += experiencedPlayerHeight + newPlayerHeight
+	default: teamRaptors.append(experiencedList[i])
+			 teamRaptors.append(newPlayerList[loopCount-i-1])
+			 teamRaptorsHeight += experiencedPlayerHeight + newPlayerHeight
 	}
 }
-let teamSharksAverage = Double(teamSharksHeight) / 6.0
-let teamDragonsAverage = Double(teamDragonsHeight) / 6.0
-let teamRaptorsAverage = Double(teamRaptorsHeight) / 6.0
+let teamSharksAverageHeight = Double(teamSharksHeight) / Double(teamSharks.count)
+let teamDragonsAverageHeight = Double(teamDragonsHeight) / Double(teamDragons.count)
+let teamRaptorsAverageHeight = Double(teamRaptorsHeight) / Double(teamRaptors.count)
 
+func printTeam(list: [[String: Any]]) {
+	var experienced: String
+	for teamMember in list {
+		if teamMember["experienced"] as! Bool == true {
+			experienced = "has played before"
+		} else {
+			experienced = "is a new player"
+		}
+		print("\(teamMember["name"]!) is \(teamMember["height"]!) inches tall, and " + experienced)
+	}
+}
+
+print("Team Sharks       Average Height: \((teamSharksAverageHeight * 100).rounded() / 100)")
+print("---------------------------------------")
+printTeam(list: teamSharks)
+print()
+print("Team Dragons      Average Height: \((teamDragonsAverageHeight * 100).rounded() / 100)")
+print("---------------------------------------")
+printTeam(list: teamDragons)
+print()
+print("Team Raptors      Average Height: \((teamRaptorsAverageHeight * 100).rounded() / 100)")
+print("---------------------------------------")
+printTeam(list: teamRaptors)
+print()
 
