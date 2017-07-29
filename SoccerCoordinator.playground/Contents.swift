@@ -165,9 +165,29 @@ printRoster(list: teamRaptors)
 	-------------------
 */
 
-func createLetter(forPlayer: [String: Any]) -> String {
-	let letter: String = ""
-	
+let practiceSchedule = ["Team Dragons": "March 17 at 1pm", "Team Sharks": "March 17 at 3pm", "Team Raptors": "March 18 at 1pm"]
+
+//	Function to compile the letter string
+func createLetter(forPlayer player: [String: Any], ofTeam team: String) -> String {
+	let letter: String = "\(player["guardian"]!),\n   \(player["name"]!) has been selected as a member of \(team).\n   \(team)'s first practice is on \(practiceSchedule[team]!). \n   We can't wait to see you there!\n"
 	return letter
 }
 
+//	Initialize the letters collection
+var letters: [String] = []
+
+//	build letters for all players in a team
+func compileTeamLetters(forTeam team: [[String: Any]], ofTeamName teamName: String){
+	for players in team {
+		letters.append(createLetter(forPlayer: players, ofTeam: teamName))
+	}
+}
+//	Put each letter into the array
+compileTeamLetters(forTeam: teamSharks, ofTeamName: "Team Sharks")
+compileTeamLetters(forTeam: teamDragons, ofTeamName: "Team Dragons")
+compileTeamLetters(forTeam: teamRaptors, ofTeamName: "Team Raptors")
+
+//	Print the letters array
+for eachLetter in letters {
+	print(eachLetter)
+}
