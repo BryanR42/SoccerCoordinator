@@ -138,7 +138,7 @@ let teamRaptorsAverageHeight = averageHeightWith(totalHeight: teamRaptorsHeight,
 
 //	Print the team rosters to the console with names, heights, and experience level, and team average heights
 
-func printRoster(list: [[String: Any]]) {
+func printRoster(ofTeam list: [[String: Any]]) {
 	var experienced: String
 	print("---------------------------------------")
 	for teamMember in list {
@@ -153,11 +153,11 @@ func printRoster(list: [[String: Any]]) {
 }
 
 print("Team Sharks       Average Height: \((teamSharksAverageHeight * 100).rounded() / 100)")
-printRoster(list: teamSharks)
+printRoster(ofTeam: teamSharks)
 print("Team Dragons      Average Height: \((teamDragonsAverageHeight * 100).rounded() / 100)")
-printRoster(list: teamDragons)
+printRoster(ofTeam: teamDragons)
 print("Team Raptors      Average Height: \((teamRaptorsAverageHeight * 100).rounded() / 100)")
-printRoster(list: teamRaptors)
+printRoster(ofTeam: teamRaptors)
 
 /*
 	-------------------
@@ -176,16 +176,16 @@ func createLetter(forPlayer player: [String: Any], ofTeam team: String) -> Strin
 //	Initialize the letters collection
 var letters: [String] = []
 
-//	build letters for all players in a team
-func compileTeamLetters(forTeam team: [[String: Any]], ofTeamName teamName: String){
+//	Build letters for all players in a team
+func compileTeamLetters(forTeam team: [[String: Any]], withTeamName teamName: String){
 	for players in team {
 		letters.append(createLetter(forPlayer: players, ofTeam: teamName))
 	}
 }
-//	Put each letter into the array
-compileTeamLetters(forTeam: teamSharks, ofTeamName: "Team Sharks")
-compileTeamLetters(forTeam: teamDragons, ofTeamName: "Team Dragons")
-compileTeamLetters(forTeam: teamRaptors, ofTeamName: "Team Raptors")
+//	Create all three teams letters and put them into one array
+compileTeamLetters(forTeam: teamSharks, withTeamName: "Team Sharks")
+compileTeamLetters(forTeam: teamDragons, withTeamName: "Team Dragons")
+compileTeamLetters(forTeam: teamRaptors, withTeamName: "Team Raptors")
 
 //	Print the letters array
 for eachLetter in letters {
